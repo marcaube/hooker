@@ -16,7 +16,8 @@
     "require": {
         "php": ">=5.3",
         "phpmd/phpmd": "~2.1",
-        "squizlabs/php_codesniffer": "~1.5"
+        "squizlabs/php_codesniffer": "~1.5",
+        "symfony/console": "~2.5"
     },
 
     "require-dev": {
@@ -24,12 +25,14 @@
     },
 
     "autoload": {
-        "psr-4": { "Vendor\\ProjectName\\": "src/"}
+        "psr-4": { "Ob\\Hooker\\": "src/"}
     },
 
     "autoload-dev": {
-        "psr-4": { "Vendor\\ProjectName\\Tests\\": "tests/" }
+        "psr-4": { "Ob\\Hooker\\Tests\\": "tests/" }
     },
+
+    "bin": ["bin/hooker"],
 
     "extra": {
         "branch-alias": {
