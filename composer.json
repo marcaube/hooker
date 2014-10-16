@@ -14,7 +14,9 @@
     ],
 
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "phpmd/phpmd": "~2.1",
+        "squizlabs/php_codesniffer": "~1.5"
     },
 
     "require-dev": {
@@ -33,5 +35,12 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
+    },
+
+    "scripts": {
+        "post-install-cmd": [
+            "cp src/pre-commit.php .git/hooks/pre-commit",
+            "chmod +x .git/hooks/pre-commit"
+        ]
     }
 }
