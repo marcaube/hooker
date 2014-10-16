@@ -1,0 +1,37 @@
+{
+    "name": "ob/hooker",
+    "description": "Sensible git hooks for your projects",
+    "keywords": ["git", "hook", "hooks", "hooker"],
+
+    "license": "MIT",
+    "type": "library",
+
+    "authors": [
+        {
+            "name": "Marc Aubé",
+            "homepage": "http://marcaube.ca"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "~4.2"
+    },
+
+    "autoload": {
+        "psr-4": { "Vendor\\ProjectName\\": "src/"}
+    },
+
+    "autoload-dev": {
+        "psr-4": { "Vendor\\ProjectName\\Tests\\": "tests/" }
+    },
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
