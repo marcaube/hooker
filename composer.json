@@ -35,12 +35,5 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
-    },
-
-    "scripts": {
-        "post-install-cmd": [
-            "cp src/pre-commit.php .git/hooks/pre-commit",
-            "chmod +x .git/hooks/pre-commit"
-        ]
     }
 }
