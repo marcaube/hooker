@@ -5,7 +5,7 @@ Sensible git hooks for your projects.
 
 ## Installation
 
-`composer require ob/hooker=dev-master`
+`composer require --dev ob/hooker=1.0.x-dev`
 
 
 ## License
