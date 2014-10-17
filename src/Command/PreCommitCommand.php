@@ -26,12 +26,19 @@ class PreCommitCommand extends BaseCommand
         // Get all added|copied|modified files (i.e. ACM)
         exec('git diff --cached --name-status --diff-filter=ACM | grep \\\\.php', $stdout);
 
+        if (!is_array($stdout)) {
+            return;
+        }
+
+        $failed = false;
+
         foreach ($stdout as $line) {
             $file = trim(substr($line, 1));
 
-            $failed = $this->lint($file);
-            $failed = $failed || $this->messDetector($file);
-            $failed = $failed || $this->codeSniffer($file);
+            $failed = $this->lint($file)
+                || $this->messDetector($file)
+                || $this->codeSniffer($file)
+            ;
         }
 
         // Prevent commit if there was a failure
@@ -68,6 +75,10 @@ class PreCommitCommand extends BaseCommand
 
         exec("./vendor/bin/phpmd $file text $rulesets", $stdout, $failed);
 
+        if (!is_array($stdout)) {
+            return;
+        }
+
         foreach ($stdout as $warning) {
             if (!empty($warning)) {
                 $failed = true;
@@ -88,6 +99,10 @@ class PreCommitCommand extends BaseCommand
         $standard = $this->config['phpcs']['standard'];
 
         exec("./vendor/bin/phpcs --standard=$standard $file", $stdout, $failed);
+
+        if (!is_array($stdout)) {
+            return;
+        }
 
         if (count($stdout) > 5) {
             foreach ($stdout as $warning) {
