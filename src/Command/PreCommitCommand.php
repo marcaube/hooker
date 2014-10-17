@@ -31,14 +31,14 @@ class PreCommitCommand extends BaseCommand
             $file = trim(substr($line, 1));
 
             $failed = $this->lint($file);
-            $failed = $this->messDetector($file);
-            $failed = $this->codeSniffer($file);
+            $failed = $failed || $this->messDetector($file);
+            $failed = $failed || $this->codeSniffer($file);
         }
 
         // Prevent commit if there was a failure
         if ($failed) {
-            echo "\nCommit aborted, please fix violations first." . PHP_EOL;
-            exit(1);
+            $output->writeln("\n<error>Commit aborted, please fix violations first.</error>");
+            return 1;
         }
     }
 
