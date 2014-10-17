@@ -2,7 +2,7 @@
 
 Sensible git hooks for your projects.
 
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/marcaube/hooker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/marcaube/hooker.svg)](https://travis-ci.org/marcaube/hooker) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/marcaube/hooker/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/marcaube/hooker/?branch=master) [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/marcaube/hooker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ## Installation
