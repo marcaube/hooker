@@ -2,11 +2,10 @@
 
 namespace Ob\Hooker\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PreCommitCommand extends Command
+class PreCommitCommand extends BaseCommand
 {
     protected function configure()
     {
@@ -66,9 +65,10 @@ class PreCommitCommand extends Command
      */
     private function messDetector($file)
     {
-        // Available rulesets: cleancode, codesize, controversial, design, naming, unusedcode.
+        $rulesets = implode(',', $this->config['phpmd']['rulesets']);
+
         exec(
-            "./vendor/bin/phpmd $file text cleancode,codesize,controversial,design,naming,unusedcode",
+            "./vendor/bin/phpmd $file text $rulesets",
             $stdout,
             $failed
         );
@@ -90,7 +90,9 @@ class PreCommitCommand extends Command
      */
     private function codeSniffer($file)
     {
-        exec("./vendor/bin/phpcs --standard=PSR2 $file", $stdout, $failed);
+        $standard = $this->config['phpcs']['standard'];
+
+        exec("./vendor/bin/phpcs --standard=$standard $file", $stdout, $failed);
 
         if (count($stdout) > 5) {
             foreach ($stdout as $warning) {

@@ -5,3 +5,5 @@ composer.phar
 php-cs-fixer.phar
 
 vendor
+
+hooker.yml

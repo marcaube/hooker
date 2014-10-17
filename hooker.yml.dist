@@ -1,0 +1,16 @@
+hooker:
+    hooks:
+        - Ob\Hooker\Command\PreCommitCommand
+    tools:
+        phpmd:
+            # Available rulesets: cleancode, codesize, controversial, design, naming, unusedcode.
+            rulesets:
+                - cleancode
+                - codesize
+                - controversial
+                - design
+                - naming
+                - unusedcode
+        phpcs:
+            # Available standards: MySource, PEAR, PHPCS, PSR1, PSR2, Squiz, Zend.
+            standard: PSR2

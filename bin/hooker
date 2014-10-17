@@ -1,9 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use Symfony\Component\Console\Application;
-use Ob\Hooker\Command\PreCommitCommand;
-
 if (!file_exists($autoloadFile = __DIR__ . '/../vendor/autoload.php') &&
     !file_exists($autoloadFile = __DIR__ . '/../../../autoload.php')) {
     die('You must set up the project dependencies, run the following commands:' . PHP_EOL .
@@ -13,7 +10,37 @@ if (!file_exists($autoloadFile = __DIR__ . '/../vendor/autoload.php') &&
 
 require $autoloadFile;
 
+use Symfony\Component\Console\Application;
+use Symfony\Component\Yaml\Yaml;
+
+$parser = new Yaml();
+$configFiles = array(
+    'hooker.yml',
+    'hooker.yml.dist'
+);
+$config = null;
+
+foreach ($configFiles as $file) {
+    if (file_exists($file)) {
+        $config = $parser->parse($file);
+        break;
+    }
+}
+
 $app = new Application('Hooker', 'dev-master');
-$app->add(new PreCommitCommand());
+
+foreach ($config['hooker']['hooks'] as $hook) {
+    if (!class_exists($hook)) {
+        continue;
+    }
+
+    /** @var \Ob\Hooker\Command\BaseCommand $command */
+    $command = new $hook;
+
+    if (is_subclass_of($command, '\Ob\Hooker\Command\BaseCommand')) {
+        $command->setConfig($config['hooker']['tools']);
+        $app->add($command);
+    }
+}
 
 $app->run();
