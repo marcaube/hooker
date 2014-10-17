@@ -27,7 +27,6 @@ class PreCommitCommand extends BaseCommand
         exec('git diff --cached --name-status --diff-filter=ACM | grep \\\\.php', $stdout);
 
         foreach ($stdout as $line) {
-            $action = trim($line[0]);
             $file = trim(substr($line, 1));
 
             $failed = $this->lint($file);
@@ -67,11 +66,7 @@ class PreCommitCommand extends BaseCommand
     {
         $rulesets = implode(',', $this->config['phpmd']['rulesets']);
 
-        exec(
-            "./vendor/bin/phpmd $file text $rulesets",
-            $stdout,
-            $failed
-        );
+        exec("./vendor/bin/phpmd $file text $rulesets", $stdout, $failed);
 
         foreach ($stdout as $warning) {
             if (!empty($warning)) {
