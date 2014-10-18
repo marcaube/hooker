@@ -35,82 +35,19 @@ class PreCommitCommand extends BaseCommand
         foreach ($stdout as $line) {
             $file = trim(substr($line, 1));
 
-            $failed = $this->lint($file)
-                || $this->messDetector($file)
-                || $this->codeSniffer($file)
-            ;
+            /** @var HookInterface $hook */
+            foreach ($this->hooks as $hook) {
+                $code = $hook->execute($file);
+
+                $failed = $failed || $code === 0;
+            }
         }
 
         // Prevent commit if there was a failure
-        if ($failed) {
+        if ($failed && $this->config['abort_on_fail']) {
             $output->writeln("\n<error>Commit aborted, please fix violations first.</error>");
+
             return 1;
         }
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return bool hasFailed
-     */
-    private function lint($file)
-    {
-        exec("/usr/bin/php -l $file 2> /dev/null", $stdout, $failed);
-
-        if ($failed) {
-            echo $stdout[0] . PHP_EOL;
-        }
-
-        return (bool) $failed;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return bool hasFailed
-     */
-    private function messDetector($file)
-    {
-        $rulesets = implode(',', $this->config['phpmd']['rulesets']);
-
-        exec("./vendor/bin/phpmd $file text $rulesets", $stdout, $failed);
-
-        if (!is_array($stdout)) {
-            return;
-        }
-
-        foreach ($stdout as $warning) {
-            if (!empty($warning)) {
-                $failed = true;
-                echo $warning . PHP_EOL;
-            }
-        }
-
-        return (bool) $failed;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return bool hasFailed
-     */
-    private function codeSniffer($file)
-    {
-        $standard = $this->config['phpcs']['standard'];
-
-        exec("./vendor/bin/phpcs --standard=$standard $file", $stdout, $failed);
-
-        if (!is_array($stdout)) {
-            return;
-        }
-
-        if (count($stdout) > 5) {
-            foreach ($stdout as $warning) {
-                echo $warning . PHP_EOL;
-            }
-            $failed = true;
-        }
-
-        return (bool) $failed;
     }
 }

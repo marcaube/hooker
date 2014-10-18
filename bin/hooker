@@ -12,15 +12,12 @@ require $autoloadFile;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Yaml;
+use \Ob\Hooker\Command\PreCommitCommand;
 
 $parser = new Yaml();
-$configFiles = array(
-    'hooker.yml',
-    'hooker.yml.dist'
-);
 $config = null;
 
-foreach ($configFiles as $file) {
+foreach (array('hooker.yml', 'hooker.yml.dist') as $file) {
     if (file_exists($file)) {
         $config = $parser->parse($file);
         break;
@@ -28,19 +25,5 @@ foreach ($configFiles as $file) {
 }
 
 $app = new Application('Hooker', 'dev-master');
-
-foreach ($config['hooker']['hooks'] as $hook) {
-    if (!class_exists($hook)) {
-        continue;
-    }
-
-    /** @var \Ob\Hooker\Command\BaseCommand $command */
-    $command = new $hook;
-
-    if (is_subclass_of($command, '\Ob\Hooker\Command\BaseCommand')) {
-        $command->setConfig($config['hooker']['tools']);
-        $app->add($command);
-    }
-}
-
+$app->add(new PreCommitCommand($config['hooker']['pre_commit']));
 $app->run();
