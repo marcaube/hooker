@@ -17,7 +17,14 @@ use \Ob\Hooker\Command\PreCommitCommand;
 $parser = new Yaml();
 $config = null;
 
-foreach (array('hooker.yml', 'hooker.yml.dist') as $file) {
+$configFiles = array(
+    __DIR__ . '/../../../../hooker.yml',
+    __DIR__ . '/../../../../hooker.yml.dist',
+    __DIR__ . '/../hooker.yml',
+    __DIR__ . '/../hooker.yml.dist'
+);
+
+foreach ($configFiles as $file) {
     if (file_exists($file)) {
         $config = $parser->parse($file);
         break;
