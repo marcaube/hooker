@@ -2,12 +2,12 @@ hooker:
 
     pre_commit:
         abort_on_fail: false
+
         hooks:
             - Ob\Hooker\Hook\PreCommit\Lint
             - Ob\Hooker\Hook\PreCommit\CodeSniffer
             - Ob\Hooker\Hook\PreCommit\MessDetector
 
-    tools:
         phpmd:
             # Available rulesets: cleancode, codesize, controversial, design, naming, unusedcode.
             rulesets:
