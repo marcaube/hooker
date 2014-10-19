@@ -10,27 +10,12 @@ if (!file_exists($autoloadFile = __DIR__ . '/../vendor/autoload.php') &&
 
 require $autoloadFile;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Yaml\Yaml;
-use \Ob\Hooker\Command\PreCommitCommand;
-
-$parser = new Yaml();
-$config = null;
-
-$configFiles = array(
-    __DIR__ . '/../../../../hooker.yml',
-    __DIR__ . '/../../../../hooker.yml.dist',
-    __DIR__ . '/../hooker.yml',
-    __DIR__ . '/../hooker.yml.dist'
-);
-
-foreach ($configFiles as $file) {
-    if (file_exists($file)) {
-        $config = $parser->parse($file);
-        break;
-    }
-}
+use Ob\Hooker\Console\Application;
+use Ob\Hooker\Console\Command\PreCommitCommand;
 
 $app = new Application('Hooker', 'dev-master');
+
+$config = $app->getConfig();
 $app->add(new PreCommitCommand($config['hooker']['pre_commit']));
+
 $app->run();

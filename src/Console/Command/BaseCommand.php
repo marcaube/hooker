@@ -1,6 +1,6 @@
 <?php
 
-namespace Ob\Hooker\Command;
+namespace Ob\Hooker\Console\Command;
 
 use Ob\Hooker\Hook\HookInterface;
 use Symfony\Component\Console\Command\Command;
@@ -20,10 +20,14 @@ class BaseCommand extends Command
     /**
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct($config = array())
     {
         parent::__construct();
         $this->config = $config;
+
+        if (!isset($config['hooks'])) {
+            return;
+        }
 
         foreach ($config['hooks'] as $class) {
             $hook = new $class($config);
