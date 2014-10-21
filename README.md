@@ -7,7 +7,24 @@ Sensible git hooks for your projects.
 
 ## Installation
 
-`composer require --dev ob/hooker=1.0.x-dev`
+* Execute `$ composer require --dev ob/hooker=1.0.x-dev`
+
+* Copy the hooker config `cp vendor/ob/hooker/hooker.yml.dist hooker.yml.dist` and tweak it to suit your needs
+
+* Add the command to your project's `.git/hooks/pre-commit` hook
+
+```bash
+#!/bin/sh
+
+./vendor/bin/hooker hook:pre-commit
+```
+
+* Finally, make it executable
+
+```bash
+$ chmod +x .git/hooks/pre-commit
+```
+
 
 
 ## License
