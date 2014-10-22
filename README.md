@@ -29,4 +29,4 @@ $ chmod +x .git/hooks/pre-commit
 
 ## License
 
-Hooker is released under the MIT License. See the bundled [LICENSE]() file for details.
+Hooker is released under the MIT License. See the bundled [LICENSE](LICENSE) file for details.
