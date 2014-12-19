@@ -19,7 +19,7 @@ class PreCommitCommand extends BaseCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return void
+     * @return null|integer
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
